@@ -363,9 +363,10 @@ BOOL MsgPackUnarchiver_unpackRawBytes(MsgPackUnarchiver * self, const void ** ou
 		}
 			
 		case MsgPackArchiveTypePoint: {
-			CGPoint p;
-			UNPACK(_ctx, double, p.x, @"double");
-			UNPACK(_ctx, double, p.y, @"double");
+			double x, y;
+			UNPACK(_ctx, double, x, @"double");
+			UNPACK(_ctx, double, y, @"double");
+			CGPoint p = CGPointMake(x, y);
 #if TARGET_OS_IPHONE
 			object = [NSValue valueWithCGPoint:p];
 #else
@@ -375,9 +376,10 @@ BOOL MsgPackUnarchiver_unpackRawBytes(MsgPackUnarchiver * self, const void ** ou
 		}
 			
 		case MsgPackArchiveTypeSize: {
-			CGSize size;
-			UNPACK(_ctx, double, size.width, @"double");
-			UNPACK(_ctx, double, size.height, @"double");
+			double width, height;
+			UNPACK(_ctx, double, width, @"double");
+			UNPACK(_ctx, double, height, @"double");
+			CGSize size = CGSizeMake(width, height);
 #if TARGET_OS_IPHONE
 			object = [NSValue valueWithCGSize:size];
 #else
@@ -387,11 +389,12 @@ BOOL MsgPackUnarchiver_unpackRawBytes(MsgPackUnarchiver * self, const void ** ou
 		}
 			
 		case MsgPackArchiveTypeRect: {
-			CGRect rect;
-			UNPACK(_ctx, double, rect.origin.x, @"double");
-			UNPACK(_ctx, double, rect.origin.y, @"double");
-			UNPACK(_ctx, double, rect.size.width, @"double");
-			UNPACK(_ctx, double, rect.size.height, @"double");
+			double x, y, width, height;
+			UNPACK(_ctx, double, x, @"double");
+			UNPACK(_ctx, double, y, @"double");
+			UNPACK(_ctx, double, width, @"double");
+			UNPACK(_ctx, double, height, @"double");
+			CGRect rect = CGRectMake(x, y, width, height);
 #if TARGET_OS_IPHONE
 			object = [NSValue valueWithCGRect:rect];
 #else
