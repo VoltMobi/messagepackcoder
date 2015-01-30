@@ -7,6 +7,10 @@
 //  Copyright (c) 2014 Seth Willits. All rights reserved.
 //
 
+#import <TargetConditionals.h>
+#if TARGET_OS_IPHONE
+#import <UIKit/UIKit.h>
+#endif
 #import <objc/runtime.h>
 #import "MsgPackUnarchiver.h"
 #import "MsgPackArchiving.h"
@@ -202,6 +206,25 @@ static bool MsgPackUnarchiver_reader(struct cmp_ctx_s *ctx, void *data, size_t l
 
 
 
+#if TARGET_OS_IPHONE
+- (CGPoint)decodeCGPointForKey:(NSString *)key
+{
+	return [OBJ_FOR_KEY(key) CGPointValue];
+}
+
+
+- (CGSize)decodeCGSizeForKey:(NSString *)key
+{
+	return [OBJ_FOR_KEY(key) CGSizeValue];
+}
+
+
+
+- (CGRect)decodeCGRectForKey:(NSString *)key
+{
+	return [OBJ_FOR_KEY(key) CGRectValue];
+}
+#else
 - (NSPoint)decodePointForKey:(NSString *)key
 {
 	return [OBJ_FOR_KEY(key) pointValue];
@@ -220,7 +243,7 @@ static bool MsgPackUnarchiver_reader(struct cmp_ctx_s *ctx, void *data, size_t l
 {
 	return [OBJ_FOR_KEY(key) rectValue];
 }
-
+#endif
 
 
 
@@ -340,28 +363,40 @@ BOOL MsgPackUnarchiver_unpackRawBytes(MsgPackUnarchiver * self, const void ** ou
 		}
 			
 		case MsgPackArchiveTypePoint: {
-			NSPoint p;
+			CGPoint p;
 			UNPACK(_ctx, double, p.x, @"double");
 			UNPACK(_ctx, double, p.y, @"double");
+#if TARGET_OS_IPHONE
+			object = [NSValue valueWithCGPoint:p];
+#else
 			object = [NSValue valueWithPoint:p];
+#endif
 			break;
 		}
 			
 		case MsgPackArchiveTypeSize: {
-			NSSize size;
+			CGSize size;
 			UNPACK(_ctx, double, size.width, @"double");
 			UNPACK(_ctx, double, size.height, @"double");
+#if TARGET_OS_IPHONE
+			object = [NSValue valueWithCGSize:size];
+#else
 			object = [NSValue valueWithSize:size];
+#endif
 			break;
 		}
 			
 		case MsgPackArchiveTypeRect: {
-			NSRect rect;
+			CGRect rect;
 			UNPACK(_ctx, double, rect.origin.x, @"double");
 			UNPACK(_ctx, double, rect.origin.y, @"double");
 			UNPACK(_ctx, double, rect.size.width, @"double");
 			UNPACK(_ctx, double, rect.size.height, @"double");
+#if TARGET_OS_IPHONE
+			object = [NSValue valueWithCGRect:rect];
+#else
 			object = [NSValue valueWithRect:rect];
+#endif
 			break;
 		}
 	}

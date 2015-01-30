@@ -7,6 +7,10 @@
 //  Copyright (c) 2014 Seth Willits. All rights reserved.
 //
 
+#import <TargetConditionals.h>
+#if TARGET_OS_IPHONE
+#import <CoreGraphics/CoreGraphics.h>
+#endif
 #import <objc/runtime.h>
 #import "MsgPackArchiver.h"
 #import "MsgPackArchiving.h"
@@ -318,7 +322,7 @@ static size_t MsgPackArchiver_writer(struct cmp_ctx_s *ctx, const void *data, si
 
 
 
-- (void)encodePoint:(NSPoint)point forKey:(NSString *)key
+- (void)encodeCGPoint:(CGPoint)point forKey:(NSString *)key
 {
 	PACK_KEY_AND_TYPE(key, MsgPackArchiveTypePoint);
 	cmp_write_double(&_ctx, (double)point.x);
@@ -326,7 +330,7 @@ static size_t MsgPackArchiver_writer(struct cmp_ctx_s *ctx, const void *data, si
 }
 
 
-- (void)encodeSize:(NSSize)size forKey:(NSString *)key;
+- (void)encodeCGSize:(CGSize)size forKey:(NSString *)key
 {
 	PACK_KEY_AND_TYPE(key, MsgPackArchiveTypeSize);
 	cmp_write_double(&_ctx, (double)size.width);
@@ -334,7 +338,7 @@ static size_t MsgPackArchiver_writer(struct cmp_ctx_s *ctx, const void *data, si
 }
 
 
-- (void)encodeRect:(NSRect)rect forKey:(NSString *)key;
+- (void)encodeCGRect:(CGRect)rect forKey:(NSString *)key
 {
 	PACK_KEY_AND_TYPE(key, MsgPackArchiveTypeRect);
 	cmp_write_double(&_ctx, (double)rect.origin.x);
@@ -342,7 +346,24 @@ static size_t MsgPackArchiver_writer(struct cmp_ctx_s *ctx, const void *data, si
 	cmp_write_double(&_ctx, (double)rect.size.width);
 	cmp_write_double(&_ctx, (double)rect.size.height);
 }
+#if TARGET_OS_MAC && !TARGET_OS_IPHONE
+- (void)encodePoint:(NSPoint)point forKey:(NSString *)key
+{
+	[self encodeCGPoint:point forKey:key];
+}
 
+
+- (void)encodeSize:(NSSize)size forKey:(NSString *)key;
+{
+	[self encodeCGSize:size forKey:key];
+}
+
+
+- (void)encodeRect:(NSRect)rect forKey:(NSString *)key;
+{
+	[self encodeCGRect:rect forKey:key];
+}
+#endif
 
 
 

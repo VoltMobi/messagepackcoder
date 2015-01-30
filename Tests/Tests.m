@@ -7,7 +7,12 @@
 //  Copyright (c) 2014 Seth Willits. All rights reserved.
 //
 
+#import <TargetConditionals.h>
+#if TARGET_OS_IPHONE
+#import <UIKit/UIKit.h>
+#else
 #import <Cocoa/Cocoa.h>
+#endif
 #import <XCTest/XCTest.h>
 #import "MsgPackArchiver.h"
 #import "MsgPackUnarchiver.h"
@@ -269,6 +274,73 @@
 
 	
 
+#if TARGET_OS_IPHONE
+- (void)testSize
+{
+	[self _testRoot:[NSValue valueWithCGSize:CGSizeMake(0.0, 0.0)]];
+	[self _testRoot:[NSValue valueWithCGSize:CGSizeMake(738.1234567, 987.6543210)]];
+	[self _testRoot:[NSValue valueWithCGSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MIN)]];
+
+	NSMutableData * mdata = [NSMutableData data];
+	MsgPackArchiver * a = [[MsgPackArchiver alloc] initForWritingWithMutableData:mdata];
+	[a encodeCGSize:CGSizeMake(0.0, 0.0) forKey:@"key0"];
+	[a encodeCGSize:CGSizeMake(738.1234567, 987.6543210) forKey:@"key1"];
+	[a encodeCGSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MIN) forKey:@"key2"];
+	[a finishEncoding];
+
+	MsgPackUnarchiver * u = [[MsgPackUnarchiver alloc] initForReadingWithData:mdata];
+	XCTAssert(CGSizeEqualToSize([u decodeCGSizeForKey:@"key0"], CGSizeMake(0.0, 0.0)));
+	XCTAssert(CGSizeEqualToSize([u decodeCGSizeForKey:@"key1"], CGSizeMake(738.1234567, 987.6543210)));
+	XCTAssert(CGSizeEqualToSize([u decodeCGSizeForKey:@"key2"], CGSizeMake(CGFLOAT_MAX, CGFLOAT_MIN)));
+}
+
+
+
+
+
+
+
+- (void)testPoint
+{
+	[self _testRoot:[NSValue valueWithCGPoint:CGPointMake(0.0, 0.0)]];
+	[self _testRoot:[NSValue valueWithCGPoint:CGPointMake(738.1234567, 987.6543210)]];
+	[self _testRoot:[NSValue valueWithCGPoint:CGPointMake(CGFLOAT_MAX, CGFLOAT_MIN)]];
+
+	NSMutableData * mdata = [NSMutableData data];
+	MsgPackArchiver * a = [[MsgPackArchiver alloc] initForWritingWithMutableData:mdata];
+	[a encodeCGPoint:CGPointMake(0.0, 0.0) forKey:@"key0"];
+	[a encodeCGPoint:CGPointMake(738.1234567, 987.6543210) forKey:@"key1"];
+	[a encodeCGPoint:CGPointMake(CGFLOAT_MAX, CGFLOAT_MIN) forKey:@"key2"];
+	[a finishEncoding];
+
+	MsgPackUnarchiver * u = [[MsgPackUnarchiver alloc] initForReadingWithData:mdata];
+	XCTAssert(CGPointEqualToPoint([u decodeCGPointForKey:@"key0"], CGPointMake(0.0, 0.0)));
+	XCTAssert(CGPointEqualToPoint([u decodeCGPointForKey:@"key1"], CGPointMake(738.1234567, 987.6543210)));
+	XCTAssert(CGPointEqualToPoint([u decodeCGPointForKey:@"key2"], CGPointMake(CGFLOAT_MAX, CGFLOAT_MIN)));
+}
+
+
+
+
+
+
+
+- (void)testRect
+{
+	[self _testRoot:[NSValue valueWithCGRect:CGRectMake(0.0, 0.0, 738.1234567, 987.6543210)]];
+	[self _testRoot:[NSValue valueWithCGRect:CGRectMake(CGFLOAT_MIN, CGFLOAT_MAX, CGFLOAT_MAX, CGFLOAT_MIN)]];
+
+	NSMutableData * mdata = [NSMutableData data];
+	MsgPackArchiver * a = [[MsgPackArchiver alloc] initForWritingWithMutableData:mdata];
+	[a encodeCGRect:CGRectMake(0.0, 0.0, 738.1234567, 987.6543210) forKey:@"key0"];
+	[a encodeCGRect:CGRectMake(CGFLOAT_MIN, CGFLOAT_MAX, CGFLOAT_MAX, CGFLOAT_MIN) forKey:@"key1"];
+	[a finishEncoding];
+
+	MsgPackUnarchiver * u = [[MsgPackUnarchiver alloc] initForReadingWithData:mdata];
+	XCTAssert(CGRectEqualToRect([u decodeCGRectForKey:@"key0"], CGRectMake(0.0, 0.0, 738.1234567, 987.6543210)));
+	XCTAssert(CGRectEqualToRect([u decodeCGRectForKey:@"key1"], CGRectMake(CGFLOAT_MIN, CGFLOAT_MAX, CGFLOAT_MAX, CGFLOAT_MIN)));
+}
+#else
 - (void)testSize
 {
 	[self _testRoot:[NSValue valueWithSize:NSMakeSize(0.0, 0.0)]];
@@ -334,7 +406,7 @@
 	XCTAssert(NSEqualRects([u decodeRectForKey:@"key0"], NSMakeRect(0.0, 0.0, 738.1234567, 987.6543210)));
 	XCTAssert(NSEqualRects([u decodeRectForKey:@"key1"], NSMakeRect(CGFLOAT_MIN, CGFLOAT_MAX, CGFLOAT_MAX, CGFLOAT_MIN)));
 }
-
+#endif
 
 
 
