@@ -56,6 +56,7 @@
 				5DE904FF1A3146150025DB42 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		5DE904FF1A3146150025DB42 /* Products */ = {
 			isa = PBXGroup;
