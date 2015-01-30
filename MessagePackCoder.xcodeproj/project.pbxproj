@@ -23,8 +23,8 @@
 		5DE9053F1A3148520025DB42 /* MsgPackUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgPackUnarchiver.h; sourceTree = "<group>"; };
 		5DE905401A3148520025DB42 /* MsgPackUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MsgPackUnarchiver.m; sourceTree = "<group>"; };
 		5DE905421A314AC30025DB42 /* MsgPackArchiving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgPackArchiving.h; sourceTree = "<group>"; };
-		5DE905451A317BBC0025DB42 /* cmp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cmp.c; sourceTree = "<group>"; };
-		5DE905461A317BBC0025DB42 /* cmp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmp.h; sourceTree = "<group>"; };
+		5DE905451A317BBC0025DB42 /* cmp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cmp.c; path = cmp/cmp.c; sourceTree = "<group>"; };
+		5DE905461A317BBC0025DB42 /* cmp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cmp.h; path = cmp/cmp.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

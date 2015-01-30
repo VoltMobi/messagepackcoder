@@ -1,0 +1,3 @@
+[submodule "MessagePackCoder/cmp"]
+	path = MessagePackCoder/cmp
+	url = https://github.com/camgunz/cmp.git
