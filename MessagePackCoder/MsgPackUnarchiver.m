@@ -288,7 +288,7 @@ BOOL MsgPackUnarchiver_unpackRawBytes(MsgPackUnarchiver * self, const void ** ou
 				return nil;
 			}
 			
-			NSData * data = [_data subdataWithRange:NSMakeRange(_readOffset, length)];
+			NSData * data = [_data subdataWithRange:NSMakeRange((NSUInteger) _readOffset, length)];
 			_readOffset += length;
 			
 			object = data;

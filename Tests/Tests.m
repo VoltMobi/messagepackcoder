@@ -417,7 +417,7 @@
 		length = data.length;
 	}];
 	
-	NSLog(@"NSCoder length: %lu", length);
+	NSLog(@"NSCoder length: %lu", (unsigned long) length);
 }
 
 
@@ -433,7 +433,7 @@
 		length = data.length;
 	}];
 	
-	NSLog(@"MsgPack length: %lu", length);
+	NSLog(@"MsgPack length: %lu", (unsigned long) length);
 }
 
 
